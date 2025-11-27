@@ -1,78 +1,158 @@
-import React from 'react';
-import { Space, Table, Tag } from 'antd';
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a>{text}</a>,
-  },
-  {
-    title: 'Code',
-    dataIndex: 'code',
-    key: 'code',
-  },
-  {
-    title: 'Value',
-    dataIndex: 'value',
-    key: 'value',
-  },
-  {
-    title: 'Expiration Date',
-    dataIndex: 'exdate',
-    key: 'exdate',
-  },
-  {
-    title: 'Status',
-    key: 'status',
-    dataIndex: 'status',
-    render: (_, { status }) => (
-      <>
-        {status.map(status => {
-          let color = status === 'valid' ? 'green' : 'geekblue';
-          
-          return (
-            <Tag color={color} key={status}>
-              {status.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Edit</a>
-        <a>Void</a>
-      </Space>
-    ),
-  },
-];
-const data = [
-  {
-    name: 'save5',
-    code: '1',
-    value: '5',
-    exdate: 'Nov.1',
-    status: ['valid'],
-  },
-  {
-    name: 'save10',
-    code: '2',
-    value: '10',
-    exdate: 'Nov.1',
-    status: ['invalid'],
-  },
-  {
-    name: 'save15',
-    code: '3',
-    value: '15',
-    exdate: 'Nov.1',
-    status: ['valid'],
-  },
-];
-const List = () => <Table columns={columns} dataSource={data} />;
+import { useEffect, useState } from "react";
+import { Tag, Popconfirm, Table, Button, message } from "antd";
+import EditCoupon from "./editCoupon";
+
+const List = () => {
+  const [coupons, setCoupons] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [editingCoupon, setEditingCoupon] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const fetchCoupons = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:3000/coupons");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setCoupons(data);
+    } catch (err) {
+      console.error(err);
+      message.error("Failed to load coupons");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
+
+  const handleEdit = (coupon) => {
+    setEditingCoupon(coupon);
+    setModalVisible(true);
+  };
+
+  const handleSave = async (updatedCoupon) => {
+    try {
+      const res = await fetch(`http://localhost:3000/coupons/${updatedCoupon.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedCoupon),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      setCoupons((prev) =>
+        prev.map((c) => (c.id === updatedCoupon.id ? updatedCoupon : c))
+      );
+
+      setModalVisible(false);
+      message.success("Coupon updated successfully!");
+    } catch (err) {
+      console.error(err);
+      message.error("Failed to update coupon");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:3000/coupons/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setCoupons(prev => prev.filter(c => c.id !== id));
+      message.success("Coupon deleted successfully!");
+    } catch (err) {
+      console.error(err);
+      message.error("Failed to delete coupon");
+    }
+  };
+
+  const columns = [
+    {
+      title: "Coupon Code",
+      dataIndex: "id",
+      key: "id",
+      sorter: (a, b) => a.id - b.id,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
+    },
+    {
+      title: "Minimum Purchase",
+      dataIndex: "minPurchase",
+      key: "minPurchase",
+      sorter: (a, b) => a.minPurchase - b.minPurchase,
+    },
+    {
+      title: "Discount",
+      dataIndex: "discount",
+      key: "discount",
+      sorter: (a, b) => a.discount - b.discount,
+    },
+    {
+      title: "Expire Date",
+      dataIndex: "expireDate",
+      key: "expireDate",
+      sorter: (a, b) => new Date(a.expireDate) - new Date(b.expireDate),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      dataIndex: 'status',
+      sorter: (a, b) => a.status.localeCompare(b.status),
+      render: (status) => {
+        let color = 'green';
+        if (status === 'expired') color = 'red';
+        if (status === 'redeemed') color = 'orange';
+        return <Tag color={color}>{status.toUpperCase()}</Tag>;
+      },
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <>
+          <Button type="link" onClick={() => handleEdit(record)}>
+            Edit
+          </Button>
+          <Popconfirm
+            title="Are you sure to delete this coupon?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="link" danger>
+              Delete
+            </Button>
+          </Popconfirm>
+        </>
+      ),
+    },
+  ];
+
+  return (
+    <>
+      <Table
+        rowKey="id"
+        columns={columns}
+        dataSource={coupons}
+        loading={loading}
+        pagination={{ pageSize: 4 }}
+      />
+
+      <EditCoupon
+        visible={modalVisible}
+        coupon={editingCoupon}
+        onCancel={() => setModalVisible(false)}
+        onSave={handleSave}
+      />
+    </>
+  );
+};
+
 export default List;

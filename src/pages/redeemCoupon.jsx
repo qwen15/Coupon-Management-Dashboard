@@ -1,74 +1,79 @@
-import React, { useState } from 'react';
-import {
-  Button,
-  Cascader,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  Select,
-  Switch,
-  TreeSelect,
-  Card
-} from 'antd';
+import React from "react";
+import { Form, Input, InputNumber, Button, message } from "antd";
 
-function Redeem() {
-  const [componentSize, setComponentSize] = useState('default');
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
+const Redeem = () => {
+  const onFinish = async (values) => {
+    //console.log("Form values:", values);
+
+    try {
+      const res = await fetch("http://localhost:3000/coupons/redeem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        message.error(data.error || "Redeem failed");
+        return;
+      }
+
+      message.success(
+        <>
+          Coupon redeemed! <br />
+          Purchase Amount: ${values.purchaseAmount} <br />
+          Discount: ${data.discount} <br />
+          Final Amount: ${data.finalAmount}
+        </>
+      );
+    } catch (err) {
+      console.error(err);
+      message.error("Network error");
+    }
   };
+
   return (
-    <Form
-      labelCol={{ span: 6 }}
-      wrapperCol={{ span: 14 }}
-      layout="horizontal"
-      initialValues={{ size: componentSize }}
-      onValuesChange={onFormLayoutChange}
-      size={componentSize}
-      style={{ maxWidth: 600 }}
-    >
-      <Form.Item
-        label='Coupon Code'
-        name='couponCode'
-        rules={[
-          {
-            required: true,
-            message: 'Please Input Coupon Code',
-          },
-        ]}
-      >
-        <Input placeholder='Please Input Coupon Code' />
-      </Form.Item>
+    <>
+      {/* <h3 class="page-title">Redeem A Coupon</h3> */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
 
-      <Form.Item 
-        label='Purchase Amount'
-        name='purchase'
-        rules={[
-          {
-            required: true,
-            message: 'Please Input Purchase Amount',
-          },
-        ]}
+        }}
       >
-        <InputNumber />
-      </Form.Item>
-
-      <Form.Item>
-        <Button
-          htmlType='submit'
-          type='primary'
-          style={{
-            display: 'block',
-            margin: '8px auto',
-            width: '20vw',
-          }}
+        <Form
+          name="redeem"
+          onFinish={onFinish}
+          layout="horizontal"
+          style={{ maxWidth: 400 }}
         >
-          Redeem
-        </Button>
-      </Form.Item>
-    </Form>
+          <Form.Item
+            label="Coupon Code"
+            name="id"
+            rules={[{ required: true, message: "Please input coupon Code" }]}
+          >
+            <Input placeholder="e.g. 1" />
+          </Form.Item>
+
+          <Form.Item
+            label="Purchase Amount"
+            name="purchaseAmount"
+            rules={[{ required: true, message: "Please input purchase amount" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} placeholder="e.g. 50" />
+          </Form.Item>
+
+          <Button type="primary" htmlType="submit" block>
+            Redeem Coupon
+          </Button>
+        </Form>
+      </div>
+    </>
   );
 };
 
-export default Redeem
+export default Redeem;

@@ -1,0 +1,82 @@
+/* .ant-layout-header , .ant-card-body {
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2) 
+} */
+
+/* .dashboard-container {
+  display: flex;
+  gap: 20px;
+} */
+
+/* .dash-card {
+  width: 48%;
+  border-radius: 12px;
+  padding: 16px;
+} */
+
+.blue-card {
+  border-top: 5px solid #1677ff;
+}
+
+.green-card {
+  border-top: 5px solid #52c41a;
+}
+
+.red-card {
+  border-top: 5px solid #c43f1a;
+}
+
+.orange-card {
+  border-top: 5px solid orange;
+}
+
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dash-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.dash-icon {
+  font-size: 22px;
+}
+
+
+.dash-content {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.dash-main-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.dash-number {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.dash-desc {
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.blue {
+  color: #1677ff;
+}
+
+.green {
+  color: #52c41a;
+}
+
+.orange {
+  color: orange;
+}
+
+.red {
+  color: #c43f1a;
+}

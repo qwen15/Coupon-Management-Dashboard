@@ -8,10 +8,9 @@ import {
   DashboardOutlined,
   CarryOutOutlined,
   UnorderedListOutlined
-
 } from '@ant-design/icons';
-import { Button, Dropdown, Layout, Menu, Space, theme } from 'antd';
-import { useNavigate } from 'react-router-dom'
+import { Button, Dropdown, Layout, Menu, theme } from 'antd';
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const { Header, Sider, Content } = Layout;
 
@@ -24,7 +23,7 @@ const sideOpendata = [
   {
     key: '/admin/add',
     icon: <FileAddOutlined />,
-    label: 'Create A Coupon',
+    label: 'Add A Coupon',
   },
   {
     key: '/admin/redeem',
@@ -34,38 +33,45 @@ const sideOpendata = [
   {
     key: '/admin/list',
     icon: <UnorderedListOutlined />,
-    label: 'List All Coupon',
+    label: 'List All Coupons',
   },
 ];
 
-//const findOpenKey = ();
-
 const MyLayout = ({ children }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation(); // current URL
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
   return (
     <Layout style={{ width: '100vw', height: '100vh' }}>
 
       <Sider trigger={null} collapsible collapsed={collapsed}>
-
         <div className="demo-logo-vertical">
           <img src={defaultImg} alt='logo' />
         </div>
+
         <Menu
-          theme="light"
+          theme="dark"
           mode="inline"
-          defaultSelectedKeys={['/admin/list']}
+          selectedKeys={[location.pathname]} // Dynamic Highlighting
           onClick={({ key }) => {
             navigate(key);
           }}
           items={sideOpendata}
         />
       </Sider>
+
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
+
+        <Header style={{ 
+          padding: 0, 
+          background: colorBgContainer,
+         
+          }}
+        >
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -77,18 +83,14 @@ const MyLayout = ({ children }) => {
             }}
           />
           <span className='app-title'>Coupon Management Dashboard</span>
+
           <Dropdown
             menu={{
               items: [
-                {
-                  label: 'Log out',
-                  key: 'logout',
-                },
+                { label: 'Log out', key: 'logout' }
               ],
               onClick: ({ key }) => {
-                if (key === 'logout') {
-                  navigate('/');
-                }
+                if (key === 'logout') navigate('/');
               },
             }}
           >
@@ -98,11 +100,10 @@ const MyLayout = ({ children }) => {
                 width: '30px',
                 float: 'right',
                 marginTop: '16px',
-                marginRight: '20px'
+                marginRight: '30px'
               }}
             />
           </Dropdown>
-
         </Header>
 
         <Content
@@ -115,6 +116,7 @@ const MyLayout = ({ children }) => {
           }}
         >
           {children}
+
         </Content>
       </Layout>
     </Layout>

@@ -9,10 +9,10 @@ function App() {
   return (
     <MyLayout>
       <Routes>
-          <Route path='dashboard' element={<Dashboard />}/>
-          <Route path='add' element={<AddCoupon />}/>
-          <Route path='redeem' element={<Redeem />}/>
-          <Route path='list' element={<List />}/>
+          <Route path='/dashboard' element={<Dashboard />}/>
+          <Route path='/add' element={<AddCoupon />}/>
+          <Route path='/redeem' element={<Redeem />}/>
+          <Route path='/list' element={<List />}/>
       </Routes>
     </MyLayout>
   )

@@ -1,7 +1,5 @@
 import { Row, Col, Card, Form, Input, Button, message } from 'antd';
-//import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-//import { loginAPI } from '../services/auth';
 import { defaultImg } from '../utils/tools';
 
 function Login() {
@@ -28,16 +26,16 @@ function Login() {
             width: '200px',
           }}
         />
-        <Card title='Coupon Management Dashboard'>
+        <Card title={<div style={{ textAlign: "center" }}>Coupon Management Dashboard</div>}>
           <Form
             labelCol={{
               md: {
                 span: 6,
               },
             }}
-            onFinish={ (v) => {
+            onFinish={(v) => {
               console.log(v);
-            
+
               message.success('Login Success');
               navigate('/admin/dashboard');
             }}

@@ -1,101 +1,103 @@
-import React, { useState } from 'react';
-import {
-  Button,
-  Cascader,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  Select,
-  Switch,
-  TreeSelect,
-  Card
-} from 'antd';
+import { Typography, Form, Input, InputNumber, Select, DatePicker, Button, message } from "antd";
+//const { Title } = Typography;
 
-function AddCoupon() {
-  const [componentSize, setComponentSize] = useState('default');
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
+const AddCoupon = () => {
+  const [form] = Form.useForm();
+
+  const onFinish = async (values) => {
+    try {
+      const payload = {
+        ...values,
+        expireDate: values.expireDate.format("YYYY-MM-DD"), // dayjs
+      };
+
+      const res = await fetch("http://localhost:3000/coupons", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      message.success("Coupon added successfully!");
+      form.resetFields();
+    } catch (err) {
+      console.error(err);
+      message.error("Failed to add coupon");
+    }
   };
+
   return (
-    <Form
-      labelCol={{ span: 6 }}
-      wrapperCol={{ span: 14 }}
-      layout="horizontal"
-      initialValues={{ size: componentSize }}
-      onValuesChange={onFormLayoutChange}
-      size={componentSize}
-      style={{ maxWidth: 600 }}
-    >
-      <Form.Item
-        label='Coupon Name'
-        name='couponName'
-        rules={[
-          {
-            required: true,
-            message: 'Please Input couponName',
-          },
-        ]}
-      >
-        <Input placeholder='Please Input Coupon Name' />
-      </Form.Item>
-      <Form.Item
-        label='Coupon Code'
-        name='couponCode'
-        rules={[
-          {
-            required: true,
-            message: 'Please Input Coupon Code',
-          },
-        ]}
-      >
-        <Input placeholder='Please Input Coupon Code' />
-      </Form.Item>
-      <Form.Item 
-        label='Coupon Value'
-        name='couponValue'
-        rules={[
-          {
-            required: true,
-            message: 'Please Input Coupon Value',
-          },
-        ]}
-      >
-        <InputNumber />
-      </Form.Item>
 
-      <Form.Item 
-        label='Minimum Purchase'
-        name='minPurchase'
-        rules={[
-          {
-            required: true,
-            message: 'Please Input Minimum Purchase',
-          },
-        ]}
+    <>
+      {/* <h3 class="page-title">Add A Coupon</h3> */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+
+        }}
       >
-        <InputNumber />
-      </Form.Item>
-
-      <Form.Item label="Expiration Date">
-        <DatePicker />
-      </Form.Item>
-
-      <Form.Item>
-        <Button
-          htmlType='submit'
-          type='primary'
-          style={{
-            display: 'block',
-            margin: '8px auto',
-            width: '20vw',
-          }}
+        <Form
+          form={form}
+          layout="horizontal"
+          onFinish={onFinish}
+          style={{ maxWidth: 400 }}
         >
-          Create
-        </Button>
-      </Form.Item>
-    </Form>
+
+          <Form.Item
+            name="name"
+            label="Coupon Name"
+            rules={[{ required: true, message: "Please input coupon name" }]}
+          >
+            <Input placeholder="e.g. save5" />
+          </Form.Item>
+
+          <Form.Item
+            name="minPurchase"
+            label="Minimum Purchase"
+            rules={[{ required: true, message: "Please input minimum purchase" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} placeholder="e.g. 50" />
+          </Form.Item>
+
+          <Form.Item
+            name="discount"
+            label="Discount"
+            rules={[{ required: true, message: "Please input discount amount" }]}
+          >
+            <InputNumber min={0} style={{ width: "100%" }} placeholder="e.g. 5" />
+          </Form.Item>
+
+          {/* <Form.Item
+  name="status"
+  label="Status"
+  rules={[{ required: true, message: "Please select status" }]}
+>
+  <Select placeholder="Select status">
+    <Option value="valid">Valid</Option>
+  
+  </Select>
+</Form.Item> */}
+
+          <Form.Item
+            name="expireDate"
+            label="Expire Date"
+            rules={[{ required: true, message: "Please select expire date" }]}
+          >
+            <DatePicker style={{ width: "100%" }} />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+              Add Coupon
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </>
+
   );
 };
 

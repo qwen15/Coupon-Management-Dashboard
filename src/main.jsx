@@ -4,7 +4,6 @@ import App from './App.jsx'
 import 'antd/dist/reset.css'
 import { HashRouter as Router, Routes, Route} from 'react-router-dom'
 import Login from './pages/login.jsx'
-import '@ant-design/v5-patch-for-react-19';
 
 createRoot(document.getElementById('root')).render(
   <Router>
