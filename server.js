@@ -219,3 +219,5 @@ app.delete('/coupons/:id', async (req, res) => {
 app.listen(PORT, () =>
   console.log(`Server running at http://localhost:${PORT}`)
 );
+
+export {normalizeCouponFields, updateExpiredCoupons, getNextCouponId};
