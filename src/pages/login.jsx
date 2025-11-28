@@ -4,7 +4,7 @@ import { defaultImg } from '../utils/tools';
 
 function Login() {
   const navigate = useNavigate();
-  //const { resetMenus } = useContext(context);
+  
   return (
     <Row>
       <Col

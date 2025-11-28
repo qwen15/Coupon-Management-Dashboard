@@ -1,13 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Card, Avatar, Statistic, Row, Col, Table, Progress } from "antd";
-import { DollarTwoTone, ShopOutlined, TagOutlined } from '@ant-design/icons';
+import { useEffect, useState } from "react";
+import { Card, Row, Col, Progress } from "antd";
+import { TagOutlined } from '@ant-design/icons';
 import "./dashboard.css"
-
-// Pie chart import
-// import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
   const [coupons, setCoupons] = useState([]);

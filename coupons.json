@@ -48,14 +48,6 @@
     "expireDate": "2025-12-31"
   },
   {
-    "id": "7",
-    "name": "save50",
-    "minPurchase": 200,
-    "discount": 50,
-    "status": "valid",
-    "expireDate": "2025-12-21"
-  },
-  {
     "id": "8",
     "name": "save 15",
     "minPurchase": 75,
@@ -65,10 +57,10 @@
   },
   {
     "id": "9",
-    "name": "save 5",
+    "name": "save 10",
     "minPurchase": 100,
-    "discount": 5,
-    "status": "valid",
-    "expireDate": "2025-11-29"
+    "discount": 20,
+    "status": "expired",
+    "expireDate": "2025-11-23"
   }
 ]
