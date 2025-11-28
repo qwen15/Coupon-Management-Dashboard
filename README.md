@@ -1,4 +1,4 @@
-# React + Vite + Ant Design + Express
+# React + Ant Design + Express
 
 ## Initialization
 npm install
