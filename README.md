@@ -1,7 +1,10 @@
 # React + Vite + Ant Design + Express
 
 ## Initialization
-npm i
+npm install
 
-## Launch
+## Launch Client
 npm run dev
+
+## Launch Server
+node server
