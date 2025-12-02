@@ -1,22 +1,22 @@
 [
   {
-    "id": "1",
+    "id": 1,
     "name": "save5",
     "minPurchase": 50,
     "discount": 5,
-    "status": "valid",
+    "status": "expired",
     "expireDate": "2025-11-29"
   },
   {
-    "id": "2",
+    "id": 2,
     "name": "save10",
     "minPurchase": 100,
     "discount": 10,
-    "status": "redeemed",
-    "expireDate": "2025-11-10"
+    "status": "valid",
+    "expireDate": "2025-12-31"
   },
   {
-    "id": "3",
+    "id": 3,
     "name": "save15",
     "minPurchase": 150,
     "discount": 15,
@@ -24,15 +24,15 @@
     "expireDate": "2025-10-31"
   },
   {
-    "id": "4",
+    "id": 4,
     "name": "save20",
     "minPurchase": 200,
     "discount": 20,
-    "status": "redeemed",
+    "status": "valid",
     "expireDate": "2025-12-31"
   },
   {
-    "id": "5",
+    "id": 5,
     "name": "save25",
     "minPurchase": 250,
     "discount": 25,
@@ -40,27 +40,43 @@
     "expireDate": "2025-12-31"
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "save 15",
     "minPurchase": 50,
     "discount": 15,
-    "status": "valid",
+    "status": "redeemed",
     "expireDate": "2025-12-31"
   },
   {
-    "id": "8",
+    "id": 7,
     "name": "save 15",
     "minPurchase": 75,
     "discount": 15,
-    "status": "valid",
+    "status": "redeemed",
     "expireDate": "2025-11-30"
   },
   {
-    "id": "9",
+    "id": 8,
     "name": "save 10",
     "minPurchase": 100,
     "discount": 20,
     "status": "expired",
     "expireDate": "2025-11-23"
+  },
+  {
+    "id": 9,
+    "name": " save50",
+    "minPurchase": 200,
+    "discount": 50,
+    "status": "valid",
+    "expireDate": "2025-12-27"
+  },
+  {
+    "id": 10,
+    "name": "save 15",
+    "minPurchase": 200,
+    "discount": 15,
+    "status": "valid",
+    "expireDate": "2025-12-30"
   }
 ]

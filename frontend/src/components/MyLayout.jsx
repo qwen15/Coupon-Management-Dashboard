@@ -14,6 +14,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 const { Header, Sider, Content } = Layout;
 
+// Sidebar menu configuration
+// Each item contains the navigation key (path), icon, and label
 const sideOpendata = [
   {
     key: '/admin/dashboard',
@@ -38,12 +40,12 @@ const sideOpendata = [
 ];
 
 const MyLayout = ({ children }) => {
-  const navigate = useNavigate();
-  const location = useLocation(); // current URL
-  const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate(); // Used for page navigation
+  const location = useLocation(); // Detects current route for highlighting menu
+  const [collapsed, setCollapsed] = useState(false); // Sider collapse state
   const {
     token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  } = theme.useToken(); // Ant Design theme variables
 
   return (
     <Layout style={{ width: '100vw', height: '100vh' }}>
@@ -56,7 +58,7 @@ const MyLayout = ({ children }) => {
         <Menu
           theme="dark"
           mode="inline"
-          selectedKeys={[location.pathname]} // Dynamic Highlighting
+          selectedKeys={[location.pathname]} // Auto highlight based on current URL
           onClick={({ key }) => {
             navigate(key);
           }}
@@ -66,11 +68,11 @@ const MyLayout = ({ children }) => {
 
       <Layout>
 
-        <Header style={{ 
-          padding: 0, 
+        <Header style={{
+          padding: 0,
           background: colorBgContainer,
-         
-          }}
+
+        }}
         >
           <Button
             type="text"
@@ -90,7 +92,7 @@ const MyLayout = ({ children }) => {
                 { label: 'Log out', key: 'logout' }
               ],
               onClick: ({ key }) => {
-                if (key === 'logout') navigate('/');
+                if (key === 'logout') navigate('/'); // Redirect to login page
               },
             }}
           >

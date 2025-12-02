@@ -4,14 +4,16 @@ import { TagOutlined } from '@ant-design/icons';
 import "./dashboard.css"
 
 const Dashboard = () => {
-  const [coupons, setCoupons] = useState([]);
+  const [coupons, setCoupons] = useState([]); // state to hold coupon data
 
+  // Fetch coupons from backend on component mount
   useEffect(() => {
     fetch("http://localhost:3000/coupons")
       .then(res => res.json())
       .then(data => setCoupons(data));
   }, []);
 
+  // Calculate statistics
   const total = coupons.length;
   const valid = coupons.filter(c => c.status === "valid").length;
   const expired = coupons.filter(c => c.status === "expired").length;
@@ -19,7 +21,6 @@ const Dashboard = () => {
 
   return (
     <><div style={{ padding: 20 }}>
-      {/* Summary Cards */}
       <Row gutter={16}>
         <Col span={6}>
           <Card className="dash-card blue-card" variant="plain">
@@ -29,7 +30,6 @@ const Dashboard = () => {
             </div>
 
             <div className="dash-content">
-              {/* <TagOutlined className="dash-main-icon blue" /> */}
               <div className="dash-number blue">{total}</div>
               <div className="dash-desc">Total coupons issued</div>
 
@@ -49,7 +49,6 @@ const Dashboard = () => {
             </div>
 
             <div className="dash-content">
-              {/* <TagOutlined className="dash-main-icon blue" /> */}
               <div className="dash-number green">{valid}</div>
               <div className="dash-desc">Total coupons valid</div>
 
@@ -86,7 +85,6 @@ const Dashboard = () => {
             </div>
 
             <div className="dash-content">
-              {/* <TagOutlined className="dash-main-icon blue" /> */}
               <div className="dash-number red">{expired}</div>
               <div className="dash-desc">Total coupons expired</div>
 

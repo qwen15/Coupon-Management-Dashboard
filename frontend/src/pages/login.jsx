@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { defaultImg } from '../utils/tools';
 
 function Login() {
-  const navigate = useNavigate();
-  
+  const navigate = useNavigate(); // hook to navigate programmatically
+
   return (
     <Row>
       <Col

@@ -1,7 +1,10 @@
-# React + Vite + Ant Design + Express
+# React + Ant Design + Express
 
 ## Initialization
 npm i
 
-## Launch
+## Frontend Launch
 npm run dev
+
+## Backend Launch
+node server

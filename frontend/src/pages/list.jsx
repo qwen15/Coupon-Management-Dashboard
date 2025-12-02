@@ -3,12 +3,13 @@ import { Tag, Popconfirm, Table, Button, message } from "antd";
 import EditCoupon from "./editCoupon";
 
 const List = () => {
-  const [coupons, setCoupons] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [coupons, setCoupons] = useState([]); // state to store coupon list
+  const [loading, setLoading] = useState(false); // state for table loading indicator
 
-  const [editingCoupon, setEditingCoupon] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [editingCoupon, setEditingCoupon] = useState(null); // coupon being edited
+  const [modalVisible, setModalVisible] = useState(false); // controls EditCoupon modal visibility
 
+  // Fetch coupons from backend
   const fetchCoupons = async () => {
     setLoading(true);
     try {
@@ -24,15 +25,18 @@ const List = () => {
     }
   };
 
+  // Load coupons once on component mount
   useEffect(() => {
     fetchCoupons();
   }, []);
 
+  // Triggered when user clicks "Edit"
   const handleEdit = (coupon) => {
-    setEditingCoupon(coupon);
-    setModalVisible(true);
+    setEditingCoupon(coupon);  // set coupon to edit
+    setModalVisible(true); // show modal
   };
 
+  // Triggered when user saves changes in modal
   const handleSave = async (updatedCoupon) => {
     try {
       const res = await fetch(`http://localhost:3000/coupons/${updatedCoupon.id}`, {
@@ -45,11 +49,12 @@ const List = () => {
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
+      // Update state with edited coupon
       setCoupons((prev) =>
         prev.map((c) => (c.id === updatedCoupon.id ? updatedCoupon : c))
       );
 
-      setModalVisible(false);
+      setModalVisible(false); // hide modal
       message.success("Coupon updated successfully!");
     } catch (err) {
       console.error(err);
@@ -57,10 +62,13 @@ const List = () => {
     }
   };
 
+  // Delete a coupon
   const handleDelete = async (id) => {
     try {
       const res = await fetch(`http://localhost:3000/coupons/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      // Remove deleted coupon from state
       setCoupons(prev => prev.filter(c => c.id !== id));
       message.success("Coupon deleted successfully!");
     } catch (err) {
@@ -69,6 +77,7 @@ const List = () => {
     }
   };
 
+  // Define table columns
   const columns = [
     {
       title: "Coupon Code",

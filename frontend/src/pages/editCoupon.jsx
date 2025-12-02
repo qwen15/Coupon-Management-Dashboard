@@ -8,7 +8,7 @@ const EditCoupon = ({ visible, onCancel, onSave, coupon }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    //fix: form data each time the pop-up window opens
+    // When the modal opens or the coupon changes, populate the form with coupon data
     if (visible && coupon) {
       form.setFieldsValue({
         name: coupon.name,
@@ -20,6 +20,7 @@ const EditCoupon = ({ visible, onCancel, onSave, coupon }) => {
     }
   }, [visible, coupon, form]);
 
+  // Called when user clicks "Save" on the modal
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
@@ -36,6 +37,7 @@ const EditCoupon = ({ visible, onCancel, onSave, coupon }) => {
     }
   };
 
+  // Called when user clicks "Cancel" or closes modal
   const handleCancel = () => {
     form.resetFields();
     onCancel();
@@ -81,7 +83,6 @@ const EditCoupon = ({ visible, onCancel, onSave, coupon }) => {
         >
           <Select>
             <Option value="valid">Valid</Option>
-            <Option value="expired">Expired</Option>
             <Option value="redeemed">Redeemed</Option>
           </Select>
 
